@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="Alpha-SQL: Zero-Shot Text-to-SQL using Monte Carlo Tree Search">
+  <meta name="keywords" content="Alpha-SQL, NL2SQL, Text-to-SQL, ICML 2025, Monte Carlo Tree Search, Large Language Models">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Alpha-SQL: Zero-Shot Text-to-SQL using Monte Carlo Tree Search</title>
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'G-PYVRSFMDRL');
+  </script>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon" href="./static/images/favicon.svg">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+</head>
+<body>
+
+<nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+  <div class="navbar-menu">
+    <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
+      <a class="navbar-item" href="https://github.com/HKUSTDial/">
+      <span class="icon">
+          <!-- <i class="fas fa-home"></i> -->
+          <img src="static/images/favicon.png" alt="Home">
+      </span>
+      </a>
+
+      <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link">
+          More Research @ DIAL
+        </a>
+        <div class="navbar-dropdown">
+          <a class="navbar-item" href="https://nl2sql360.github.io/">
+            NL2SQL360
+          </a>
+          <a class="navbar-item" href="https://elliesql.github.io/">
+            EllieSQL
+          </a>
+          <a class="navbar-item" href="https://nl2sql-bugs.github.io/">
+            NL2SQL-Bugs
+          </a>
+          <a class="navbar-item" href="https://github.com/HKUSTDial/NL2SQL_Handbook/">
+            NL2SQL-Handbook
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</nav>
+
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">Alpha-SQL: Zero-Shot Text-to-SQL using Monte Carlo Tree Search</h1>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              <a href="https://liboyan.vip/">Boyan Li</a><sup>1</sup>,</span>
+            <span class="author-block">
+              <a href="https://didiforgithub.github.io/">Jiayi Zhang</a><sup>1</sup>,</span>
+            <span class="author-block">
+              <a href="http://iir.ruc.edu.cn/~fanj/">Ju Fan</a><sup>2</sup>,
+            </span>
+            <span class="author-block">
+              <a href="#">Yanwei Xu</a><sup>3</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://chenchongthu.github.io/">Chong Chen</a><sup>3</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://nantang.github.io/">Nan Tang</a><sup>1</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://luoyuyu.vip/"><sup>*</sup>Yuyu Luo</a><sup>1</sup>
+            </span>
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><sup>1</sup>The Hong Kong University of Science and Technology (Guangzhou),</span><br>
+            <span class="author-block"><sup>2</sup>Renmin University of China,</span>
+            <span class="author-block"><sup>3</sup>Huawei Cloud BU</span><br>
+            <span class="author-block" style="color: rgb(155,155,155); font-weight: normal;">*The Corresponding Author.</span>
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- PDF Link. -->
+              <span class="link-block">
+                <a href="https://arxiv.org/pdf/2502.17248"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                  </span>
+                  <span>Paper</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="https://arxiv.org/abs/2502.17248"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                  </span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+              <!-- Code Link. -->
+              <span class="link-block">
+                <a href="https://github.com/HKUSTDial/Alpha-SQL"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code</span>
+                  </a>
+              </span>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <img id="teaser" autoplay="" muted="" loop="" playsinline="" width="100%" height="100%" src="static\images\overview.png">
+      <h2 class="subtitle has-text-centered">
+        Overview of Alpha-SQL Framework
+      </h2>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <h2 class="title is-3">📖 Introduction</h2>
+        <div class="content has-text-justified">
+          <p>
+            Text-to-SQL, which enables natural language interaction with databases, serves as a pivotal method across diverse industries. With new, more powerful large language models (LLMs) emerging every few months, fine-tuning has become incredibly costly, labor-intensive, and error-prone. As an alternative, zero-shot Text-to-SQL, which leverages the growing knowledge and reasoning capabilities encoded in LLMs without task-specific fine-tuning, presents a promising and more challenging direction.
+          </p>
+          <p>
+            To address this challenge, we propose <strong>Alpha-SQL</strong>, a novel approach that leverages a Monte Carlo Tree Search (MCTS) framework to iteratively infer SQL construction actions based on partial SQL query states. To enhance the framework's reasoning capabilities, we introduce LLM-as-Action-Modelto dynamically generate SQL construction actions during the MCTS process, steering the search toward more promising SQL queries. Moreover, Alpha-SQL employs a self-supervised reward function to evaluate the quality of candidate SQL queries, ensuring more accurate and efficient query generation.
+          </p>
+          <p>
+            Experimental results show that Alpha-SQL achieves 69.7% execution accuracy on the BIRD development set, using a 32B open-source LLM without fine-tuning. Alpha-SQL outperforms the best previous zero-shot approach based on GPT-4o by 2.5% on the BIRD development set.
+          </p>
+        </div>
+      </div>
+    </div>
+    <!--/ Abstract. -->
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <h2 class="title is-3">🛠️ Implementations</h2>
+        <div class="content has-text-justified">
+          <p>
+            Alpha-SQL implements a novel framework that combines Monte Carlo Tree Search (MCTS) with Large Language Models (LLMs) for zero-shot Text-to-SQL generation. The implementation consists of three key components:
+          </p>
+          <p>
+            <strong>1. MCTS-based Search Framework:</strong> The system models SQL generation as a search problem, where each node represents a partial SQL query state and edges represent SQL construction actions. The MCTS process iteratively explores the search space to find optimal SQL queries through selection, expansion, simulation, and backpropagation phases.
+          </p>
+          <p>
+            <strong>2. LLM-as-Action-Model:</strong> To enhance reasoning capabilities, we introduce seven distinct reasoning actions:
+          </p>
+          <ul>
+            <li>Question Rephrasing: Decomposes complex questions into structured formats</li>
+            <li>Schema Selection: Identifies relevant database schema elements</li>
+            <li>Column Value Identification: Extracts filtering conditions from questions</li>
+            <li>Column Function Identification: Determines necessary SQL functions</li>
+            <li>SQL Generation: Constructs SQL queries using a divide-and-conquer approach</li>
+            <li>SQL Revision: Corrects invalid queries based on execution feedback</li>
+            <li>Termination: Finalizes the SQL generation process</li>
+          </ul>
+          <p>
+            <strong>3. Self-Supervised Reward Function:</strong> The system employs a self-consistency based reward mechanism that evaluates SQL queries by comparing execution results across multiple sampled queries. This approach ensures reliable query generation without requiring annotated data.
+          </p>
+          <blockquote>
+            <p><strong><i>Please refer to our paper for more detials.</i></strong>
+                        </p>
+          </blockquote>
+        </div>
+      </div>
+    </div>
+    <!--/ Abstract. -->
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <h2 class="title is-3">🧪 Experiments</h2>
+        <div class="content has-text-justified">
+          <p>
+            We conduct extensive experiments to evaluate Alpha-SQL's performance on both BIRD and Spider datasets. Our experiments demonstrate the effectiveness of our approach in zero-shot Text-to-SQL tasks.
+          </p>
+
+          <div>
+            <img id="teaser" autoplay="" muted="" loop="" playsinline="" width="75%" height="90%" src="static\images\exp_table.png" style="display: block; margin-left: auto; margin-right: auto;">
+          </div>
+
+          <h3 class="title is-4">Main Results</h3>
+          <p>
+            <strong>Performance on BIRD Dataset:</strong> Alpha-SQL achieves 69.7% execution accuracy on the BIRD development set using a 32B open-source LLM without fine-tuning. This performance:
+          </p>
+          <ul>
+            <li>Outperforms the best previous zero-shot approach based on GPT-4o by 2.5%</li>
+            <li>Surpasses many methods that require data fine-tuning</li>
+            <li>Only trails behind methods that fine-tune proprietary models like Gemini-1.5-Flash</li>
+          </ul>
+
+          <p>
+            <strong>Performance on Spider Dataset:</strong> Alpha-SQL with Qwen2.5-Coder-14B outperforms existing methods, achieving a 2.1% improvement over SFT Coder-15B, which was specifically fine-tuned for the Spider dataset.
+          </p>
+
+          <h3 class="title is-4">Ablation Studies</h3>
+          <p>
+            We conduct ablation studies to validate the effectiveness of our reasoning actions:
+          </p>
+          <ul>
+            <li>Removing any action from the original action space negatively impacts performance</li>
+            <li>The SQL Revision action shows particular significance, leveraging database interaction for query correction</li>
+            <li>Performance improves with more MCTS rollouts, demonstrating the effectiveness of our search strategy</li>
+          </ul>
+
+          <h3 class="title is-4">Comparison with Baseline LLMs</h3>
+          <p>
+            Our experiments show that Alpha-SQL, utilizing a model with only 7B parameters:
+          </p>
+          <ul>
+            <li>Surpasses all baseline models in performance</li>
+            <li>Outperforms sophisticated reasoning-optimized models like Gemini-2.0-Flash-Thinking-Exp</li>
+            <li>Achieves significant accuracy improvements of 17.0% and 16.5% for Qwen2.5-Coder-7B and Phi-4 respectively</li>
+          </ul>
+
+          <blockquote>
+            <p><strong><i>Please refer to our paper for more detailed experimental results and analysis.</i></strong></p>
+          </blockquote>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">✏️BibTeX Citation</h2>
+    <pre><code>@inproceedings{alpha-sql,
+      author       = {Boyan Li and
+                      Jiayi Zhang and
+                      Ju Fan and
+                      Yanwei Xu and
+                      Chong Chen and
+                      Nan Tang and
+                      Yuyu Luo},
+      title        = {Alpha-SQL: Zero-Shot Text-to-SQL using Monte Carlo Tree Search},
+      booktitle    = {Forty-Second International Conference on Machine Learning, {ICML} 2025,
+                      Vancouver, Canada, July 13-19, 2025},
+      publisher    = {OpenReview.net},
+      year         = {2025}
+}
+</code></pre>
+  </div>
+</section>
+
+
+<footer class="footer">
+  <div class="container">
+    <div class="content has-text-centered">
+      <a class="icon-link"
+         href="https://arxiv.org/pdf/2502.17248">
+        <i class="fas fa-file-pdf"></i>
+      </a>
+      <a class="icon-link" href="https://github.com/HKUSTDial/Alpha-SQL" class="external-link" disabled>
+        <i class="fab fa-github"></i>
+      </a>
+    </div>
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+          <p>
+            This website is licensed under a <a rel="license"
+                                                href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+            Commons Attribution-ShareAlike 4.0 International License</a>.
+          </p>
+          <p>
+            This means you are free to borrow the <a
+              href="https://github.com/nerfies/nerfies.github.io">source code</a> of this website,
+            we just ask that you link back to this page in the footer.
+            Please remember to remove the analytics code included in the header of the website which
+            you do not want on your website.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
