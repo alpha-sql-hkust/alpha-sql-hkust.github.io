@@ -241,11 +241,12 @@
             We conduct extensive experiments to evaluate Alpha-SQL's performance on both BIRD and Spider datasets. Our experiments demonstrate the effectiveness of our approach in zero-shot Text-to-SQL tasks.
           </p>
 
-          <div>
-            <img id="teaser" autoplay="" muted="" loop="" playsinline="" width="75%" height="90%" src="static\images\exp_table.png" style="display: block; margin-left: auto; margin-right: auto;">
-          </div>
-
           <h3 class="title is-4">Main Results</h3>
+
+          <div>
+            <img id="exp_table" autoplay="" muted="" loop="" playsinline="" width="75%" height="90%" src="static\images\exp_table.png" style="display: block; margin-left: auto; margin-right: auto;">
+          </div>
+          <br>
           <p>
             <strong>Performance on BIRD Dataset:</strong> Alpha-SQL achieves 69.7% execution accuracy on the BIRD development set using a 32B open-source LLM without fine-tuning. This performance:
           </p>
@@ -259,17 +260,25 @@
             <strong>Performance on Spider Dataset:</strong> Alpha-SQL with Qwen2.5-Coder-14B outperforms existing methods, achieving a 2.1% improvement over SFT Coder-15B, which was specifically fine-tuned for the Spider dataset.
           </p>
 
-          <h3 class="title is-4">Ablation Studies</h3>
+          <h3 class="title is-4">Impact of MCTS Rollouts</h3>
+          <div>
+            <img id="rollouts" autoplay="" muted="" loop="" playsinline="" width="50%" height="50%" src="static\images\rollouts.png" style="display: block; margin-left: auto; margin-right: auto;">
+          </div>
+          <br>
           <p>
-            We conduct ablation studies to validate the effectiveness of our reasoning actions:
+            We investigate how the number of MCTS rollouts affects the performance of Alpha-SQL:
           </p>
           <ul>
-            <li>Removing any action from the original action space negatively impacts performance</li>
-            <li>The SQL Revision action shows particular significance, leveraging database interaction for query correction</li>
-            <li>Performance improves with more MCTS rollouts, demonstrating the effectiveness of our search strategy</li>
+            <li>As the number of rollouts increases from 1 to 24, the execution accuracy steadily improves</li>
+            <li>The upper bound of performance (measured by Pass@N) shows a similar upward trend, up to 84% at Pass@24</li>
+            <li>This demonstrates that our MCTS framework effectively explores the search space and finds better SQL queries with more rollouts</li>
           </ul>
 
           <h3 class="title is-4">Comparison with Baseline LLMs</h3>
+          <div>
+            <img id="baseline" autoplay="" muted="" loop="" playsinline="" width="50%" height="50%" src="static\images\baseline.png" style="display: block; margin-left: auto; margin-right: auto;">
+          </div>
+          <br>
           <p>
             Our experiments show that Alpha-SQL, utilizing a model with only 7B parameters:
           </p>
@@ -277,6 +286,20 @@
             <li>Surpasses all baseline models in performance</li>
             <li>Outperforms sophisticated reasoning-optimized models like Gemini-2.0-Flash-Thinking-Exp</li>
             <li>Achieves significant accuracy improvements of 17.0% and 16.5% for Qwen2.5-Coder-7B and Phi-4 respectively</li>
+          </ul>
+
+          <h3 class="title is-4">Ablation Studies</h3>
+          <div>
+            <img id="ablation" autoplay="" muted="" loop="" playsinline="" width="50%" height="50%" src="static\images\ablation.png" style="display: block; margin-left: auto; margin-right: auto;">
+          </div>
+          <br>
+          <p>
+            We conduct ablation studies to validate the effectiveness of our reasoning actions:
+          </p>
+          <ul>
+            <li>Removing any action from the original action space negatively impacts performance</li>
+            <li>The SQL Revision action shows particular significance, leveraging database interaction for query correction</li>
+            <li>Performance improves with more MCTS rollouts, demonstrating the effectiveness of our search strategy</li>
           </ul>
 
           <blockquote>
